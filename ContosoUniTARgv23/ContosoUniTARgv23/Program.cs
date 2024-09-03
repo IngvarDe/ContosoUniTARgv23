@@ -16,8 +16,9 @@ namespace ContosoUniTARgv23
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            
             var app = builder.Build();
+            CreateDbIfNotExists(app);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
