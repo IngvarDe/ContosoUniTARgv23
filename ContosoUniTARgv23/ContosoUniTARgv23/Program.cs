@@ -49,7 +49,7 @@ namespace ContosoUniTARgv23
                     try
                     {
                         var context = services.GetRequiredService<SchoolContext>();
-                        DbInitializer.Intialize(context);
+                        DbInitializer.Initialize(context);
                     }
                     catch (Exception ex)
                     {
