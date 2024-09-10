@@ -1,4 +1,4 @@
-﻿namespace ContosoUniTARgv23.Models
+﻿namespace ContosoUniTARgv23.Models.SchoolViewModels
 {
     public class InstructorIndexData
     {

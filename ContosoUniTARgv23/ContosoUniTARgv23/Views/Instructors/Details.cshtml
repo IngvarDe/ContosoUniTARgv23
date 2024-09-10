@@ -1,0 +1,36 @@
+﻿@model ContosoUniTARgv23.Models.Instructor
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Instructor</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => Model.LastName)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => Model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => Model.FirstMidName)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => Model.FirstMidName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => Model.HireDate)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => Model.HireDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
