@@ -1,5 +1,7 @@
 ﻿using ContosoUniTARgv23.Data;
+using ContosoUniTARgv23.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContosoUniTARgv23.Controllers
@@ -24,6 +26,88 @@ namespace ContosoUniTARgv23.Controllers
                 .ToListAsync();
 
             return View(courses);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .Include(c => c.Department)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.CourseId == id);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.CourseId == id);
+
+            if(course == null)
+            {
+                return NotFound();
+            }
+
+            PopulateDepartmentDropDownList(course.DepartmentId);
+            return View(course);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var courseToUpdate = await _context.Courses
+                .FirstOrDefaultAsync(c => c.CourseId == id);
+
+            if (await TryUpdateModelAsync<Course>(courseToUpdate,
+                "",
+                c => c.Credits, c => c.DepartmentId, c => c.Title))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            PopulateDepartmentDropDownList(courseToUpdate.DepartmentId);
+            return View(courseToUpdate);
+        }
+
+        private void PopulateDepartmentDropDownList(object selectedDepartment = null)
+        {
+            var departmentsQuery = from d in _context.Departments
+                                   orderby d.Name
+                                   select d;
+
+            ViewBag.DepartmentId = new SelectList(departmentsQuery
+                .AsNoTracking(), "DepartmentId", "Name", selectedDepartment);
         }
     }
 }
