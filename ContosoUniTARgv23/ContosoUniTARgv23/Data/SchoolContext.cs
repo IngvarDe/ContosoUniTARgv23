@@ -29,6 +29,9 @@ namespace ContosoUniTARgv23.Data
 
             modelBuilder.Entity<CourseAssignment>()
                 .HasKey(c => new { c.CourseId, c.InstructorId });
+
+            modelBuilder.Entity<Department>()
+                .Property(p => p.RowVersion).IsRowVersion();
         }
     }
 }
